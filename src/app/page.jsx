@@ -8,16 +8,9 @@ import ServicesView from "../components/ServicesView";
 import AboutView from "../components/AboutView";
 import ContactView from "../components/ContactView";
 import BookingView from "../components/BookingView";
-import PortalView from "../components/PortalView";
-import PatientPanelView from "../components/PatientPanelView";
 
 export default function Page() {
   const [view, setView] = useState("home");
-  const [portalRefresh, setPortalRefresh] = useState(false);
-
-  const handleBookingSuccess = () => {
-    setPortalRefresh((prev) => !prev);
-  };
 
   const renderActiveView = () => {
     switch (view) {
@@ -33,30 +26,19 @@ export default function Page() {
         return (
           <BookingView
             setView={setView}
-            onBookingSuccess={handleBookingSuccess}
+            onBookingSuccess={() => {}}
           />
         );
-      case "portal":
-        return <PortalView setView={setView} triggerRefresh={portalRefresh} />;
-      case "patient":
-        return <PatientPanelView setView={setView} />;
       default:
         return <HomeView setView={setView} />;
     }
   };
 
-  const isPortal = view === "portal";
-
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f9fb] text-gray-800 antialiased">
-      {/* If we are not in the administrative portal, we render the public navbar */}
-      {!isPortal && <Header currentView={view} setView={setView} />}
-
-      {/* Active screen content canvas */}
+      <Header currentView={view} setView={setView} />
       <main className="flex flex-col flex-grow">{renderActiveView()}</main>
-
-      {/* If we are not in the administrative portal, we render the public footer */}
-      {!isPortal && <Footer setView={setView} />}
+      <Footer setView={setView} />
     </div>
   );
 }

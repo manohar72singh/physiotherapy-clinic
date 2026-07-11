@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Menu, X, Activity } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Header({ currentView, setView }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   const navItems = [
     { label: "Services", view: "services" },
@@ -52,7 +54,7 @@ export default function Header({ currentView, setView }) {
         {/* Desktop Buttons */}
         <div className="hidden md:flex items-center gap-4">
           <button
-            onClick={() => handleNavClick("patient")}
+            onClick={() => router.push("/patient-portal")}
             className="text-sm font-semibold bg-primary text-white hover:opacity-90 transition-all px-5 py-2 rounded-full cursor-pointer shadow-sm active:scale-95"
           >
             Patient Login
@@ -90,7 +92,7 @@ export default function Header({ currentView, setView }) {
           ))}
           <div className="h-[1px] bg-gray-100 my-1" />
           <button
-            onClick={() => handleNavClick("patient")}
+            onClick={() => router.push("/patient-portal")}
             className="w-full bg-primary text-white text-center font-semibold py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all"
           >
             Patient Login

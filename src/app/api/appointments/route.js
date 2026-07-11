@@ -1,8 +1,18 @@
 import db from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { sendEmail } from "@/lib/email";
+import { emailTemplates } from "@/lib/emailTemplates";
 
-export async function GET(request, { params }) {
+export async function GET(request) {
+  const session = await getServerSession(authOptions);
+  
+  // Only admins can get all appointments
+  if (!session || session.user.role !== "admin") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const [appointments] = await db.query("SELECT * FROM appointments ORDER BY createdAt DESC");
@@ -10,11 +20,9 @@ export async function GET(request, { params }) {
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
-
 }
 
-export async function POST(request, { params }) {
-
+export async function POST(request) {
   const body = await request.json();
   const { patientName, email, phone, serviceId, serviceName, date, time, condition, price } = body;
 
@@ -25,10 +33,13 @@ export async function POST(request, { params }) {
   try {
     const [existingPatients] = await db.query("SELECT * FROM patients WHERE email = ?", [email.toLowerCase()]);
     let patient = existingPatients[0];
+    let plainPassword = null;
 
     if (!patient) {
       const patientId = `PT-${Math.floor(1000 + Math.random() * 9000)}`;
-      const defaultPassword = await bcrypt.hash('password123', 10);
+      // Generate a random secure password
+      plainPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = await bcrypt.hash(plainPassword, 10);
       
       const newPatient = {
         id: patientId,
@@ -36,7 +47,7 @@ export async function POST(request, { params }) {
         email: email.toLowerCase(),
         phone: phone || "",
         condition_desc: condition || serviceName,
-        password: defaultPassword,
+        password: hashedPassword,
         lastVisit: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
         totalAppointments: 1,
       };
@@ -66,11 +77,22 @@ export async function POST(request, { params }) {
       VALUES (?, ?, ?, ?, ?, ?)
     `, [invoiceId, appointmentId, patientName, price || 120.0, "Pending", new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })]);
 
+    // Send confirmation email asynchronously
+    const emailHtml = emailTemplates.bookingConfirmation({
+      patientName,
+      serviceName,
+      date,
+      time,
+      email,
+      plainPassword,
+    });
+    
+    sendEmail({ to: email, subject: "Booking Confirmation - Zenith Physiotherapy", html: emailHtml });
+
     return NextResponse.json({ success: true, appointmentId }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Failed to book appointment" }, { status: 500 });
   }
-
 }
 

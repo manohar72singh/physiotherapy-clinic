@@ -17,8 +17,11 @@
     "motion": "^12.23.24",
     "mysql2": "^3.22.6",
     "next": "15.1.7",
+    "next-auth": "^4.24.14",
+    "nodemailer": "^7.0.13",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

@@ -22,6 +22,7 @@ import {
   X,
   ShieldAlert,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export default function PortalView({ setView, triggerRefresh }) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -38,22 +39,6 @@ export default function PortalView({ setView, triggerRefresh }) {
   });
   const [loading, setLoading] = useState(true);
   const [isNewAppointmentOpen, setIsNewAppointmentOpen] = useState(false);
-
-  // Authentication State
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminUsername, setAdminUsername] = useState("");
-  const [adminPassword, setAdminPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
-
-  const handleAdminLogin = (e) => {
-    e.preventDefault();
-    if (adminUsername === "admin" && adminPassword === "admin123") {
-      setIsAuthenticated(true);
-      setLoginError("");
-    } else {
-      setLoginError("Invalid username or password");
-    }
-  };
 
   // New manual appointment form state
   const [newPatientName, setNewPatientName] = useState("");
@@ -88,77 +73,8 @@ export default function PortalView({ setView, triggerRefresh }) {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchData();
-    }
-  }, [triggerRefresh, isAuthenticated]);
-
-  if (!isAuthenticated) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#f7f9fb] px-4 font-sans">
-        <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-xl shadow-black/5 border border-gray-100 relative overflow-hidden">
-          {/* Top colored accent */}
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-blue-400"></div>
-          
-          <div className="flex justify-center mb-6 mt-2">
-            <div className="bg-primary/10 p-4 rounded-2xl">
-              <ShieldAlert className="w-10 h-10 text-primary" />
-            </div>
-          </div>
-          
-          <h2 className="text-2xl font-bold text-center mb-2 text-gray-900">Clinic Portal Login</h2>
-          <p className="text-center text-sm text-gray-500 mb-8 px-4">Enter your administrative credentials to access the secure clinic dashboard.</p>
-          
-          {loginError && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-xl mb-6 text-sm text-center font-medium border border-red-100">
-              {loginError}
-            </div>
-          )}
-          
-          <form onSubmit={handleAdminLogin} className="space-y-5">
-            <div>
-              <label className="block text-gray-700 text-sm font-semibold mb-2 ml-1">Username</label>
-              <input 
-                type="text" 
-                value={adminUsername} 
-                onChange={e => setAdminUsername(e.target.value)} 
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all" 
-                placeholder="Enter username"
-                required 
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm font-semibold mb-2 ml-1">Password</label>
-              <input 
-                type="password" 
-                value={adminPassword} 
-                onChange={e => setAdminPassword(e.target.value)} 
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all" 
-                placeholder="••••••••"
-                required 
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="w-full bg-primary text-white font-bold py-3.5 px-4 rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 transition-all mt-4 shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
-            >
-              Access Portal
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </form>
-          
-          <div className="mt-8 text-center border-t border-gray-100 pt-6">
-            <button 
-              onClick={() => setView('home')} 
-              className="text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors inline-flex items-center gap-2"
-            >
-              ← Return to Website
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    fetchData();
+  }, [triggerRefresh]);
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {
@@ -336,7 +252,7 @@ export default function PortalView({ setView, triggerRefresh }) {
           </button>
 
           <button
-            onClick={() => setView("home")}
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
           >
             <LogOut className="w-4.5 h-4.5" />
