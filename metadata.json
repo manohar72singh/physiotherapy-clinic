@@ -1,0 +1,6 @@
+{
+  "name": "Zenith Physiotherapy",
+  "description": "Premium clinical booking, client portal, and clinic management dashboard for Zenith Physiotherapy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
