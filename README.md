@@ -1,20 +1,78 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Zenith Physiotherapy
 
-# Run and deploy your AI Studio app
+Zenith Physiotherapy is a modern, premium web application built for a professional physical therapy clinic. It features a complete patient-facing website, a secure Patient Portal for tracking recovery journeys, and a comprehensive Admin Portal for managing appointments, patients, and invoicing.
 
-This contains everything you need to run your app locally.
+## 🌟 Key Features
 
-View your app in AI Studio: https://ai.studio/apps/98542b9c-fac5-4fca-904f-951a75af816d
+- **Marketing Website:** A stunning, cinematic landing page featuring dynamic glassmorphism and modern Light & Clinical aesthetic.
+- **Patient Portal:** A secure dashboard where patients can view their upcoming appointments, track their recovery progress, and securely pay their invoices.
+- **Admin Control Center:** A comprehensive suite for administrators to manage daily clinic operations, including appointment scheduling, patient records, financial statistics, and messaging.
+- **Email Automation:** Built-in automated email functionality for booking confirmations and general inquiries using Nodemailer.
+- **Secure Authentication:** Role-based access control (Admin vs. Patient) using NextAuth.js.
 
-## Run Locally
+## 🛠️ Technology Stack
 
-**Prerequisites:**  Node.js
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS v4 (Custom Glassmorphism utilities, Outfit Font)
+- **Database:** MySQL
+- **Authentication:** NextAuth.js (Credentials Provider)
+- **Email:** Nodemailer (SMTP Integration)
+- **Icons:** Lucide React
 
+## 🚀 Getting Started
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+
+- Node.js (v18 or higher)
+- MySQL Server (Running locally or remote)
+
+### 1. Installation
+
+Clone the repository and install the dependencies:
+
+```bash
+npm install
+```
+
+### 2. Environment Variables
+
+Create a `.env` file in the root directory and add the following variables:
+
+```env
+# NextAuth Configuration
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-super-secret-key-here"
+
+# Database Configuration (MySQL)
+DB_HOST="localhost"
+DB_USER="root"
+DB_PASSWORD="your-database-password"
+DB_NAME="zenith_physio"
+
+# SMTP Email Configuration (e.g., Gmail)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=465
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
+```
+
+### 3. Run the Development Server
+
+Start the application locally:
+
+```bash
+npm run dev
+```
+
+The application will be available at [http://localhost:3000](http://localhost:3000).
+
+## 🔒 Portals Access
+
+- **Main Website:** `http://localhost:3000/`
+- **Patient Login:** `http://localhost:3000/login`
+- **Admin Dashboard:** `http://localhost:3000/login?role=admin`
+
+*(Note: Ensure your MySQL database is seeded with valid user credentials to access the portals).*
+
+---
+*Developed for Zenith Physiotherapy Clinics.*
