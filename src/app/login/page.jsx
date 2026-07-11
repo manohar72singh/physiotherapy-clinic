@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { ShieldAlert, Users, ChevronRight, Activity } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const defaultRole = searchParams.get("role") || "patient";
   
@@ -126,5 +126,17 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#f7f9fb]">
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }

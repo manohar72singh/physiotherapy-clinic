@@ -165,38 +165,38 @@ export default function PortalView({ setView, triggerRefresh }) {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-surface overflow-hidden font-sans">
       {/* 1. Left Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shrink-0">
+      <aside className="w-64 bg-white border-r border-slate-200 text-slate-800 flex flex-col justify-between shrink-0 shadow-sm z-20">
         <div>
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-gray-100 flex items-center gap-2.5 select-none">
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-secondary">
-              <Building2 className="w-5 h-5" />
+          <div className="p-6 border-b border-slate-100 flex items-center gap-3 select-none">
+            <div className="w-10 h-10 rounded-xl bg-primary-light border border-primary/10 flex items-center justify-center text-primary shadow-sm">
+              <Building2 className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="font-bold text-gray-900 text-sm tracking-tight leading-none">
-                City Center Clinic
+              <h2 className="font-bold text-primary text-base tracking-tight leading-none">
+                Zenith Admin
               </h2>
-              <p className="text-[10px] text-gray-400 font-semibold uppercase mt-1">
-                Zenith Physio
+              <p className="text-[11px] text-slate-500 font-semibold uppercase mt-1 tracking-wider">
+                Control Center
               </p>
             </div>
           </div>
 
           {/* New Appointment Button */}
-          <div className="px-4 py-4">
+          <div className="px-5 py-6">
             <button
               onClick={() => setIsNewAppointmentOpen(true)}
-              className="w-full bg-secondary text-white text-xs font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm hover:bg-opacity-95 active:scale-[0.98] transition-all cursor-pointer"
+              className="w-full bg-primary text-white text-sm font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-primary/20 hover:bg-primary-light hover:text-primary hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-5 h-5" />
               New Appointment
             </button>
           </div>
 
           {/* Navigation Links */}
-          <nav className="px-3 flex flex-col gap-1 select-none">
+          <nav className="px-4 flex flex-col gap-2 select-none">
             {[
               { id: "overview", label: "Overview", icon: LayoutDashboard },
               {
@@ -208,11 +208,10 @@ export default function PortalView({ setView, triggerRefresh }) {
               { id: "invoicing", label: "Invoicing", icon: Receipt },
               {
                 id: "messages",
-                label: "Contact Messages",
+                label: "Messages Feed",
                 icon: MailCheck,
                 badge: messages.filter((m) => m.status === "Unread").length,
               },
-              { id: "settings", label: "Settings", icon: Settings },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -223,18 +222,18 @@ export default function PortalView({ setView, triggerRefresh }) {
                     setActiveTab(tab.id);
                     setSearchQuery("");
                   }}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                     isActive
-                      ? "bg-secondary/10 text-secondary"
-                      : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+                      ? "bg-primary-light text-primary shadow-sm"
+                      : "text-slate-500 hover:text-primary hover:bg-slate-50"
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="w-4.5 h-4.5" />
+                    <Icon className={`w-5 h-5 ${isActive ? "text-primary" : ""}`} />
                     <span>{tab.label}</span>
                   </div>
                   {tab.badge && tab.badge > 0 ? (
-                    <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">
+                    <span className="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold shadow-sm">
                       {tab.badge}
                     </span>
                   ) : null}
@@ -245,32 +244,37 @@ export default function PortalView({ setView, triggerRefresh }) {
         </div>
 
         {/* Sidebar Bottom */}
-        <div className="p-4 border-t border-gray-100 flex flex-col gap-4">
-          <button className="flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
-            <HelpCircle className="w-4.5 h-4.5" />
+        <div className="p-5 border-t border-slate-100 flex flex-col gap-4">
+          <button className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 hover:text-primary transition-all cursor-pointer">
+            <Settings className="w-5 h-5" />
+            <span>Settings</span>
+          </button>
+          
+          <button className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 hover:text-primary transition-all cursor-pointer">
+            <HelpCircle className="w-5 h-5" />
             <span>Help Center</span>
           </button>
 
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer"
           >
-            <LogOut className="w-4.5 h-4.5" />
+            <LogOut className="w-5 h-5" />
             <span>Logout Portal</span>
           </button>
 
-          <div className="h-[1px] bg-gray-100" />
+          <div className="h-[1px] bg-slate-100 my-2" />
 
           {/* Admin profile */}
-          <div className="flex items-center gap-3 select-none">
-            <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-extrabold shadow-sm">
+          <div className="flex items-center gap-3 select-none px-2">
+            <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary text-sm font-extrabold shadow-sm border border-primary/10">
               AD
             </div>
             <div>
-              <p className="text-xs font-bold text-gray-900 leading-none">
-                Admin Coordinator
+              <p className="text-sm font-bold text-slate-800 leading-none">
+                Admin User
               </p>
-              <p className="text-[10px] text-gray-400 font-medium mt-0.5">
+              <p className="text-[11px] text-slate-500 font-medium mt-1">
                 care@zenithphysio.com
               </p>
             </div>
@@ -344,59 +348,62 @@ export default function PortalView({ setView, triggerRefresh }) {
               {activeTab === "overview" && (
                 <>
                   {/* Stats Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 select-none">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 select-none animate-fade-in-up">
                     {/* Stat Card 1 */}
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden group">
-                      <span className="text-xs text-gray-400 font-bold font-sans">
+                    <div className="bg-white border-none rounded-3xl p-6 shadow-md flex flex-col gap-2 relative overflow-hidden group">
+                      <div className="absolute -right-4 -top-4 w-24 h-24 bg-emerald-50 rounded-full transition-transform group-hover:scale-150 duration-500 ease-out" />
+                      <span className="text-sm text-slate-500 font-bold font-sans relative z-10">
                         Today's Admissions
                       </span>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-3xl font-bold text-gray-900 font-sans">
+                      <div className="flex items-baseline gap-3 mt-2 relative z-10">
+                        <span className="text-4xl font-extrabold text-primary font-sans">
                           {stats.todayAdmissions}
                         </span>
-                        <span className="bg-emerald-50 text-emerald-600 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
-                          <TrendingUp className="w-3 h-3" />
+                        <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                          <TrendingUp className="w-3.5 h-3.5" />
                           +12%
                         </span>
                       </div>
-                      <p className="text-[10px] text-gray-400 mt-2 font-sans font-medium">
+                      <p className="text-xs text-slate-400 mt-2 font-sans font-medium relative z-10">
                         Scheduled & pending triage
                       </p>
                     </div>
 
                     {/* Stat Card 2 */}
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden group">
-                      <span className="text-xs text-gray-400 font-bold font-sans">
+                    <div className="bg-white border-none rounded-3xl p-6 shadow-md flex flex-col gap-2 relative overflow-hidden group">
+                      <div className="absolute -right-4 -top-4 w-24 h-24 bg-blue-50 rounded-full transition-transform group-hover:scale-150 duration-500 ease-out" />
+                      <span className="text-sm text-slate-500 font-bold font-sans relative z-10">
                         Active Patients
                       </span>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-3xl font-bold text-gray-900 font-sans">
+                      <div className="flex items-baseline gap-3 mt-2 relative z-10">
+                        <span className="text-4xl font-extrabold text-primary font-sans">
                           {stats.activePatients}
                         </span>
-                        <span className="bg-blue-50 text-blue-600 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md">
+                        <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-lg shadow-sm">
                           This month
                         </span>
                       </div>
-                      <p className="text-[10px] text-gray-400 mt-2 font-sans font-medium">
+                      <p className="text-xs text-slate-400 mt-2 font-sans font-medium relative z-10">
                         Under active therapy prescription
                       </p>
                     </div>
 
                     {/* Stat Card 3 */}
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col gap-2 relative overflow-hidden group">
-                      <span className="text-xs text-gray-400 font-bold font-sans">
+                    <div className="bg-gradient-to-br from-primary to-blue-900 border-none rounded-3xl p-6 shadow-xl flex flex-col gap-2 relative overflow-hidden group">
+                      <div className="absolute -right-10 -top-10 w-40 h-40 bg-accent/20 rounded-full blur-2xl transition-transform group-hover:scale-125 duration-500" />
+                      <span className="text-sm text-accent font-bold font-sans relative z-10">
                         Daily Revenue
                       </span>
-                      <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-3xl font-bold text-gray-900 font-sans">
+                      <div className="flex items-baseline gap-3 mt-2 relative z-10">
+                        <span className="text-4xl font-extrabold text-white font-sans">
                           ${stats.totalRevenue.toLocaleString()}
                         </span>
-                        <span className="bg-emerald-50 text-emerald-600 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
-                          <TrendingUp className="w-3 h-3" />
+                        <span className="bg-accent/20 text-accent text-xs font-bold px-2 py-1 rounded-lg flex items-center gap-1 backdrop-blur-sm">
+                          <TrendingUp className="w-3.5 h-3.5" />
                           +5%
                         </span>
                       </div>
-                      <p className="text-[10px] text-gray-400 mt-2 font-sans font-medium">
+                      <p className="text-xs text-slate-300 mt-2 font-sans font-medium relative z-10">
                         Paid copay & insurance claims
                       </p>
                     </div>
