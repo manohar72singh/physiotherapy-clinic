@@ -34,29 +34,8 @@ Clone the repository and install the dependencies:
 npm install
 ```
 
-### 2. Environment Variables
 
-Create a `.env` file in the root directory and add the following variables:
-
-```env
-# NextAuth Configuration
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-super-secret-key-here"
-
-# Database Configuration (MySQL)
-DB_HOST="localhost"
-DB_USER="root"
-DB_PASSWORD="your-database-password"
-DB_NAME="zenith_physio"
-
-# SMTP Email Configuration (e.g., Gmail)
-SMTP_HOST="smtp.gmail.com"
-SMTP_PORT=465
-SMTP_USER="your-email@gmail.com"
-SMTP_PASS="your-app-password"
-```
-
-### 3. Run the Development Server
+### 2. Run the Development Server
 
 Start the application locally:
 
